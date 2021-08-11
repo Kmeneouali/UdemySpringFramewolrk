@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.udemy.spring.rest.webservices.user.Exceptions.UserNotFoundException;
 import com.udemy.spring.rest.webservices.user.beans.User;
 import com.udemy.spring.rest.webservices.user.dao.userDaoService;
 
@@ -29,16 +30,17 @@ public class UserController {
 	
 	@GetMapping("/users/{id}")
 	public User retrieveUserById(@PathVariable Integer id) {
-		return services.findOne(id);
+		User user=services.findOne(id);
+		
+		if(user==null)
+			throw new UserNotFoundException("id - "+id);
+		return user;
 	}
 	
 	@PostMapping("/users")
 	public ResponseEntity<Object> createUser(@RequestBody User user) {
 		User createdUser=services.save(user);
-		
 	   URI location= ServletUriComponentsBuilder.fromCurrentRequest().path("{id}").buildAndExpand(createdUser.getId()).toUri();
-	   
-	   
 	   return ResponseEntity.created(location).build();
 	}
 }
