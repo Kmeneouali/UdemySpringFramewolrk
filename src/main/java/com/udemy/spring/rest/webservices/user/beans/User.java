@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 
 public class User {
 	private Integer id;
-	@Size(min = 3, message = "Name should have altest")
+	@Size(min = 3, message = "Name should have altest 3 caracters ")
 	private String name;
 	@Past
 	private Date birthDate;
